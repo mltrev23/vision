@@ -19,7 +19,7 @@ metagraph = None
 
 asyncio_lock: asyncio.Lock = asyncio.Lock()
 threading_lock: threading.Lock = threading.Lock()
-MIN_VALIDATOR_STAKE = 0 if miner_config.subtensor_network == "test" else 5000
+MIN_VALIDATOR_STAKE = 0 if miner_config.subtensor_network == "test" else 0
 
 
 class MinerRequestsStatus:

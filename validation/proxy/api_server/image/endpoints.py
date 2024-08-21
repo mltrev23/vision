@@ -6,7 +6,7 @@ from validation.proxy import get_synapse, validation_utils
 from fastapi import routing
 from validation.proxy.api_server.image import utils
 from validation.core_validator import core_validator
-
+import bittensor as bt
 from validation.proxy import dependencies
 
 router = routing.APIRouter(tags=["image"])
@@ -21,7 +21,7 @@ async def text_to_image(
         body=body,
         synapse_model=synapses.TextToImage,
     )
-
+    bt.logging.info(f"request body:{synapse.dict}")
     result: utility_models.QueryResult = await core_validator.make_organic_query(
         synapse=synapse,
         outgoing_model=base_models.TextToImageOutgoing,
@@ -29,6 +29,7 @@ async def text_to_image(
         stream=False,
     )
     if isinstance(result, JSONResponse):
+        bt.logging.info(f"result:{result.dict}")
         return result
     validation_utils.handle_bad_result(result)
 
