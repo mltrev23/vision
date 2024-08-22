@@ -17,11 +17,12 @@ async def text_to_image(
     body: request_models.TextToImageRequest,
     _: None = fastapi.Depends(dependencies.get_token),
 ) -> request_models.TextToImageResponse:
+    bt.logging.info(f"request body:{body.dict()}")
     synapse: synapses.TextToImage = get_synapse.get_synapse_from_body(
         body=body,
         synapse_model=synapses.TextToImage,
     )
-    bt.logging.info(f"request body:{synapse.dict}")
+    bt.logging.info(f"request synapse body:{synapse.dict()}")
     result: utility_models.QueryResult = await core_validator.make_organic_query(
         synapse=synapse,
         outgoing_model=base_models.TextToImageOutgoing,
@@ -29,7 +30,7 @@ async def text_to_image(
         stream=False,
     )
     if isinstance(result, JSONResponse):
-        bt.logging.info(f"result:{result.dict}")
+        bt.logging.info(f"result:{result.__dict__}")
         return result
     validation_utils.handle_bad_result(result)
 

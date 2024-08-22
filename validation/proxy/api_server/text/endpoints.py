@@ -8,7 +8,7 @@ from fastapi.routing import APIRouter
 from validation.core_validator import core_validator
 import fastapi
 from validation.proxy import dependencies
-
+import bittensor as bt
 router = APIRouter()
 
 
@@ -18,11 +18,12 @@ async def chat(
     body: request_models.ChatRequest,
     _: None = fastapi.Depends(dependencies.get_token),
 ) -> StreamingResponse:
+    bt.logging.info(f"chat_synapse:{body.dict}")
     synapse = get_synapse.get_synapse_from_body(
         body=body,
         synapse_model=synapses.Chat,
     )
-
+    bt.logging.info(f"chat_synapse:{synapse}")
     # First two for backwards compatibility
 
     if synapse.model == utility_models.ChatModels.mixtral.value:

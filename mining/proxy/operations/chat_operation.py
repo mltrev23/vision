@@ -43,6 +43,7 @@ class ChatOperation(abstract_operation.Operation):
     @staticmethod
     @abstract_operation.enforce_concurrency_limits
     async def forward(synapse: synapses.Chat) -> synapses.Chat:
+        bt.logging.info(f"chat_synapse:{synapse}")
         if synapse.model == utility_models.ChatModels.llama_3_1_8b.value:
             url = miner_config.llama_3_1_8b_text_worker_url
         elif synapse.model == utility_models.ChatModels.llama_3_1_70b.value:
